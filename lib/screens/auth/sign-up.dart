@@ -4,8 +4,8 @@ import 'package:flutter_app/widgets/round-buttons.dart';
 import 'package:flutter_app/widgets/gradient-bg.dart';
 import 'package:flutter_app/screens/home/home.dart';
 import 'package:flutter_app/screens/auth/sign-in.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_app/services/firestoreService.dart';
 
 class SignUp extends StatefulWidget {
@@ -38,7 +38,7 @@ class _SignUpState extends State<SignUp> {
     _focusNode2.addListener(_onOnFocusNodeEvent);
     _focusNode3 = new FocusNode();
     _focusNode3.addListener(_onOnFocusNodeEvent);
-    // callFireStore();
+    callFireStore();
   }
 
   _onOnFocusNodeEvent() {
@@ -60,103 +60,104 @@ class _SignUpState extends State<SignUp> {
 
   bool loading = false;
 
-  // Firestore store;
+  Firestore store;
 
-  // callFireStore() async {
-  // store = await fireStoreCommonService();
-  // }
+  callFireStore() async {
+    store = await fireStoreCommonService();
+  }
 
-  // CollectionReference get users => store.collection('users');
+  CollectionReference get users => store.collection('users');
 
-  // final databaseReference = Firestore.instance;
-  // final FirebaseAuth auth = FirebaseAuth.instance;
+  final databaseReference = Firestore.instance;
+  final FirebaseAuth auth = FirebaseAuth.instance;
 
-  // Future<void> registerUser() async {
-
-  //   final FormState form = _formKey.currentState;
-  //   if (!form.validate()) {
-  //     return;
-  //   } else {
-  //     form.save();
-  //     print('email name $email  $password');
-////      await LoginService.registerUser(email, password, name).then((onValue) {
-  // FirebaseUser user = await auth
-  //     .createUserWithEmailAndPassword(email: email, password: password)
-  //     .then((userNew) {
-  //   print('onvalue $userNew');
-  //   setState(() {
-  //     loading = false;
-  //   });
+  Future<void> registerUser() async {
+    final FormState form = _formKey.currentState;
+    if (!form.validate()) {
+      return;
+    } else {
+      form.save();
+      print('email name $email  $password');
+      //  await LoginService.registerUser(email, password, name).then((onValue) {
+      FirebaseUser user = await auth
+          .createUserWithEmailAndPassword(email: email, password: password)
+          .then((userNew) {
+        print('onvalue $userNew');
+        setState(() {
+          loading = false;
+        });
 
 ////        userNew.sendEmailVerification().then((_) {
-  // showDialog<Null>(
-  //   context: context,
-  //   barrierDismissible: false,
-  //   builder: (BuildContext context) {
-  //     return Container(
-  //       width: 270.0,
-  //       child: new AlertDialog(
-  //         title: new Text('Thank you for Signing Up with us...!!'),
-  //         content: new SingleChildScrollView(
-  //           child: new ListBody(
-  //             children: <Widget>[
-  //               new Text('Proceed with login'),
-  //             ],
-  //           ),
-  //         ),
-  //         actions: <Widget>[
-  //           new FlatButton(
-  //             child: new Text('ok'),
-  //             onPressed: () {
-  //               Navigator.pushAndRemoveUntil(
-  //                   context,
-  //                   MaterialPageRoute(
-  //                     builder: (BuildContext context) => SignIn(),
-  //                   ),
-  //                       (Route<dynamic> route) => false);
-  //             },
-  //           ),
-  //         ],
-  //       ),
-  //     );
-  //   },
-  // );
+        showDialog<Null>(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return Container(
+              width: 270.0,
+              child: new AlertDialog(
+                title: new Text('Thank you for Signing Up with us...!!'),
+                content: new SingleChildScrollView(
+                  child: new ListBody(
+                    children: <Widget>[
+                      new Text('Proceed with login'),
+                    ],
+                  ),
+                ),
+                actions: <Widget>[
+                  new FlatButton(
+                    child: new Text('ok'),
+                    onPressed: () {
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => SignIn(),
+                          ),
+                          (Route<dynamic> route) => false);
+                    },
+                  ),
+                ],
+              ),
+            );
+          },
+        );
 
-  ////  });
-  //     }).catchError((onError) {
-  //       setState(() {
-  //         loading = false;
-  //       });
-  //       print('onnnnnn $onError');
-  //       errorText = onError.toString().split(',')[1];
-  //       showDialog<Null>(
-  //         context: context,
-  //         barrierDismissible: false,
-  //         builder: (BuildContext context) {
-  //           return Container(
-  //             width: 270.0,
-  //             child: new AlertDialog(
-  //               title: new Text('Please check!!'),
-  //               content: new SingleChildScrollView(
-  //                 child: new ListBody(
-  //                   children: <Widget>[
-  //                     new Text('$errorText'),
-  //                   ],
-  //                 ),
-  //               ),
-  //               actions: <Widget>[
-  //                 new FlatButton(
-  //                   child: new Text('ok'),
-  //                   onPressed: () {Navigator.pop(context);},
-  //                 ),
-  //               ],
-  //             ),
-  //           );
-  //         },
-  //       );
-  //     });
-  //   }
-  // }
+        ////  });
+      }).catchError((onError) {
+        setState(() {
+          loading = false;
+        });
+        print('onnnnnn $onError');
+        errorText = onError.toString().split(',')[1];
+        showDialog<Null>(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return Container(
+              width: 270.0,
+              child: new AlertDialog(
+                title: new Text('Please check!!'),
+                content: new SingleChildScrollView(
+                  child: new ListBody(
+                    children: <Widget>[
+                      new Text('$errorText'),
+                    ],
+                  ),
+                ),
+                actions: <Widget>[
+                  new FlatButton(
+                    child: new Text('ok'),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -444,7 +445,7 @@ class _SignUpState extends State<SignUp> {
                               const EdgeInsets.only(top: 50.0, bottom: 12.0),
                           child: RawMaterialButton(
                             onPressed: () async {
-                              // await registerUser();
+                              await registerUser();
                             },
                             child: RoundButton(
                               title: "SIGN UP",

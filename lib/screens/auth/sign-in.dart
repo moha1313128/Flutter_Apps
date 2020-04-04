@@ -3,12 +3,12 @@ import 'package:flutter_app/styles/styles.dart';
 import 'package:flutter_app/widgets/round-buttons.dart';
 import 'package:flutter_app/screens/home/home.dart';
 import 'package:flutter_app/screens/auth/sign-up.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import 'dart:convert' show json;
-// import 'package:http/http.dart' as http;
+import 'package:http/http.dart' as http;
 // import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 // import 'package:google_sign_in/google_sign_in.dart';
 import 'forgot-password.dart';
@@ -74,67 +74,76 @@ class _SignInState extends State<SignIn> {
 
   bool loading = false;
 
-  // final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  // Future<void> loginUser() async {
+  Future<void> loginUser() async {
+    final FormState form = _formKey.currentState;
+    if (!form.validate()) {
+      return;
+    } else {
+      form.save();
 
-  //   final FormState form = _formKey.currentState;
-  //   if (!form.validate()) {
-  //     return;
-  //   } else {
-  //     form.save();
+      try {
+        // FirebaseUser user = await auth.currentUser();
+        AuthResult result = await FirebaseAuth.instance
+            .signInWithEmailAndPassword(email: email, password: password);
+        setState(() {
+          loading = false;
+        });
+        FirebaseUser user = result.user;
+        // FirebaseUser user = await _firebaseAuth.signInWithEmailAndPassword(
+        //     email: email, password: password);
+        // setState(() {
+        //   loading = false;
+        // });
 
-  //     try {
-  //       FirebaseUser user = await auth.signInWithEmailAndPassword(
-  //           email: email, password: password);
-  //       setState(() {
-  //         loading = false;
-  //       });
+        print('onval $user');
 
-  //       print('onval $user');
-
-  //       Navigator.pushAndRemoveUntil(
-  //           context,
-  //           MaterialPageRoute(
-  //             builder: (BuildContext context) => Chat(user: user, userData: user,),
-  //           ),
-  //               (Route<dynamic> route) => false);
-  //     } catch (onError) {
-  //       setState(() {
-  //         loading = false;
-  //       });
-  //       print('onnnnnn $onError');
-  //       errorText = onError.toString().split(',')[1];
-  //       showDialog<Null>(
-  //         context: context,
-  //         barrierDismissible: false,
-  //         builder: (BuildContext context) {
-  //           return Container(
-  //             width: 270.0,
-  //             child: new AlertDialog(
-  //               title: new Text('Please check!!'),
-  //               content: new SingleChildScrollView(
-  //                 child: new ListBody(
-  //                   children: <Widget>[
-  //                     new Text('$errorText'),
-  //                   ],
-  //                 ),
-  //               ),
-  //               actions: <Widget>[
-  //                 new FlatButton(
-  //                   child: new Text('ok'),
-  //                   onPressed: () {
-  //                     Navigator.pop(context);
-  //                   },
-  //                 ),
-  //               ],
-  //             ),
-  //           );
-  //         },
-  //       );
-  //     }
-  //   }
-  // }
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (BuildContext context) => Chat(
+                user: user,
+                userData: user,
+              ),
+            ),
+            (Route<dynamic> route) => false);
+      } catch (onError) {
+        setState(() {
+          loading = false;
+        });
+        print('onnnnnn $onError');
+        errorText = onError.toString().split(',')[1];
+        showDialog<Null>(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return Container(
+              width: 270.0,
+              child: new AlertDialog(
+                title: new Text('Please check!!'),
+                content: new SingleChildScrollView(
+                  child: new ListBody(
+                    children: <Widget>[
+                      new Text('$errorText'),
+                    ],
+                  ),
+                ),
+                actions: <Widget>[
+                  new FlatButton(
+                    child: new Text('ok'),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      }
+    }
+  }
 
   // fbLoginUser(id, name, email,) async {
   //   var authData = {
@@ -503,9 +512,9 @@ class _SignInState extends State<SignIn> {
                 ),
                 RawMaterialButton(
                   padding: EdgeInsets.symmetric(vertical: 16.0),
-                  // onPressed: () async {
-                  //   await loginUser();
-                  // },
+                  onPressed: () async {
+                    await loginUser();
+                  },
                   child: RoundButton(
                     title: "SIGN IN",
                     color1: primaryDark,

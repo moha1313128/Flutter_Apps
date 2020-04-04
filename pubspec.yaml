@@ -27,6 +27,12 @@ dependencies:
   getflutter: ^1.0.11
   fluttertoast: ^4.0.1
   uuid: ^2.0.4
+
+  rxdart: ^0.23.1
+  firebase_auth: ^0.15.5+3
+  cloud_firestore: ^0.13.4+2
+  firebase_core: ^0.4.4+3
+  http: ^0.12.0+4
   
 
 dev_dependencies:

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "91606821555",
+    "firebase_url": "https://socailapp-9d10a.firebaseio.com",
+    "project_id": "socailapp-9d10a",
+    "storage_bucket": "socailapp-9d10a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:91606821555:android:c6bfe00924a01808019ec6",
+        "android_client_info": {
+          "package_name": "com.example.flutter_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "91606821555-btfc36m8a6kss7llc27h142a003bv40g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flutter_app",
+            "certificate_hash": "8bf0eec728f2f4622eb41cc52c76a69259b98887"
+          }
+        },
+        {
+          "client_id": "91606821555-7va5b3jc4sb69norf1dilp17ns20i5i8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASQH09OXgyf35fyMIFPzdtKJypv2aNjb4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "91606821555-7va5b3jc4sb69norf1dilp17ns20i5i8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

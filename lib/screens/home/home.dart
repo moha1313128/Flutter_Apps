@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_app/styles/styles.dart';
 // import 'package:google_sign_in/google_sign_in.dart';
 // import 'package:flutter_facebook_login/flutter_facebook_login.dart';
@@ -9,11 +9,11 @@ import '../auth/sign-in.dart';
 import 'package:flutter_app/widgets/round-buttons.dart';
 
 class Chat extends StatefulWidget {
-  // static const String id = "CHAT";
-  // final FirebaseUser user;
-  // final userData;
+  static const String id = "CHAT";
+  final FirebaseUser user;
+  final userData;
 
-  // const Chat({Key key, this.user, this.userData}) : super(key: key);
+  const Chat({Key key, this.user, this.userData}) : super(key: key);
   @override
   _ChatState createState() => _ChatState();
 }
@@ -21,6 +21,19 @@ class Chat extends StatefulWidget {
 class _ChatState extends State<Chat> {
   // final FirebaseAuth _auth = FirebaseAuth.instance;
   // final GoogleSignIn googleSignIn = GoogleSignIn();
+
+  void signOut() async {
+    FirebaseAuth.instance.signOut().then((value) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (BuildContext context) => SignIn(),
+        ),
+      );
+    }).catchError((e) {
+      print(e);
+    });
+  }
 
   // void signOutGoogle() async{
   //   await googleSignIn.signOut();
@@ -104,6 +117,15 @@ class _ChatState extends State<Chat> {
                 //     Text("${widget.userData}", style: textPrimaryTextSR(),),
 //            Text("welcome ${widget.user.email}", style: textPrimaryTextSR(),),
 
+                RawMaterialButton(
+                  padding: EdgeInsets.symmetric(vertical: 16.0),
+                  onPressed: signOut,
+                  child: RoundButton(
+                    title: "Sign out",
+                    color1: primaryDark,
+                    color2: primaryLight,
+                  ),
+                ),
                 RawMaterialButton(
                   padding: EdgeInsets.symmetric(vertical: 16.0),
                   // onPressed: signOutGoogle,
